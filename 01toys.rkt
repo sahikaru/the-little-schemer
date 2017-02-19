@@ -1,25 +1,30 @@
 #lang racket
 
-;define atom?
+;define atom
 (define atom?
   (lambda (x)
     (and (not (pair? x)) (not (null? x)))))
 
+; Atoms
+;
 ;is atom an atom
-`atom
 
+(atom? `atom)
 ;is turkey an atom
-`turkey
+(atom? `turkey)
 
 ;is 1492 an atom
-`1492
+(atom? 1492)
 
 ;is u an atom
-`u
+(atom? `u)
 
 ;is *abc$ an atom
-`*abc$
+(atom? `*abc$)
 
+
+; Lists
+;
 ;is (atom) a list
 `(atom)
 
@@ -31,6 +36,12 @@
 ;is ((atom turkey) or) a list
 `((atom turkey) or)
 
+
+
+; S-expression
+;
+; All atoms and lists are S-express
+;
 ;is (x y z) is a S-expression
 `(x y z)
 
@@ -49,15 +60,21 @@
 ;how many S-expression in (((how) are)((you)(doing so))far)
 (length `(((how) are)((you)(doing so))far))
 
-;() is a list
+;is () a list
 `()
 
 ;() is an atom
-`()
+(atom? `())
 
 ;is (() () ()) a list
 `(() () ())
 
+
+; The Law of Car
+;
+;     The primitive car is defined only
+;     for non-empty list
+;
 ;car of l where l is (a b c)
 (car `(a b c))
 
@@ -79,6 +96,13 @@
 ;car of (car l) where is (((hotdog)) (and))
 (car (car `(((hotdog)) (and))))
 
+
+; The Law of Cdr
+;
+;    The primitive cdr is defined only
+;    for non-empty list. The cdr of any
+;    non-empty list is always anther list.
+;
 ;cdr of l where l is (a b c)
 (cdr `(a b c))
 
@@ -107,6 +131,17 @@
 ;(cdr (car l)) where l is (a (b (c)) d)
 ;(cdr (car `(a (b (c)) d)))
 
+
+
+;    The Law of Cons
+;
+;    The primitive const takes two arguments.
+;    The second argument to cons must be a list.
+;    The result is a list.
+;
+;    The first argument is any S-expression.
+;    cons adds this to the front of a list.
+;
 ;cons a and l where a is peanut and l is (butter and jelly)
 (cons `peanut `(butter and jelly))
 
@@ -134,6 +169,12 @@
 ;cons s (cdr l) where s is a and l is ((b) c d)
 (cons `a (cdr `((b) c d)))
 
+
+
+;    The Law of Null
+;
+;    The primitive null? is defined only for lists.
+;
 ;is list null where l is null
 (null? `())
 
@@ -146,6 +187,12 @@
 ;(null? a) true of false where a is spaghetti 
 (null? `spaghetti)
 
+;
+;    The Law of eq?
+;
+;    The primitive eq? takes two arguments.
+;    Each must be a non-nummeric atom.
+;
 ;is true of false s is an atom where s is Harry
 (atom? `Harry)
 
@@ -172,4 +219,19 @@
 
 ;is (eq? a1 a2) where a1 is margarine and a2 is butter
 (eq? `margarine `butter)
+
+;is (eq? l1 l2) true of false wher l1 is () and l2 is (strawberry)
+(eq? `() `(strawberry))
+
+;is (eq? n1 n2) true or false where n1 is 6 and n2 is 7;
+(eq? 6 7)
+
+;is (eq? (car l) a) true or false where l is (Marry had a little lamb chop) and a is Mary
+(eq? (car `(Marry had a little lamb chop)) `Marry)
+
+;is (eq? (cdr l) a) true of false where l is (soured milk) and a si milk
+(eq? (cdr `(soured milk)) `milk)
+
+;is (eq? (car l) (car (cdr l))) true of false where l is (beans beans we need jelly beans)
+(eq? (car `(beans beans we need jelly beans)) (car (cdr `(beans beans we need jelly beans))))
 
